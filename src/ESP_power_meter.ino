@@ -32,6 +32,9 @@
 
 // Replace the following your sensitive info
 
+// TLS
+// static const char *fingerprint PROGMEM = XXXX ;
+
 //MQTT
 //const char *MQTT_SERVER = "XXXXXX";
 //const char *MQTT_USER = "XXXXXX"; // NULL for no authentication
@@ -44,7 +47,7 @@
 const int ESP_BUILTIN_LED = 2;
 bool check;
 
-WiFiClient espClient;
+WiFiClientSecure espClient;
 PubSubClient mqttClient(espClient);
 
 uint32_t SEND_FREQUENCY =
@@ -87,10 +90,7 @@ void IRQ_HANDLER_ATTR onPulse()
         uint32_t newBlinkmillis = millis();
         uint32_t intervalmicros = newBlinkmicros - lastBlinkmicros;
         uint32_t intervalmillis = newBlinkmillis - lastBlinkmillis;
-        if (intervalmillis < 20) { // Debouncing
-            return;
-        }
-        if (intervalmicros < 10000L && intervalmillis < 10L) { // Sometimes we get interrupt on RISING
+        if (intervalmicros < 100000 || intervalmillis < 100) { // Sometimes we get interrupt on RISING
             return;
         }
         if (intervalmillis < 360000) { // Less than an hour since last pulse, use microseconds
@@ -210,6 +210,8 @@ void setup() {
     ESP.restart();
   }
 
+  // espClient.setFingerprint(fingerprint);   // <-- Change #3: Set the SHA1 fingerprint
+  espClient.setInsecure();
 
   Serial.println("Ready");
   Serial.print("IP address: ");
@@ -217,8 +219,8 @@ void setup() {
 
   OTAconfig();
 
-  mqttClient.setServer(MQTT_SERVER, 1883);
-  
+  mqttClient.setServer(MQTT_SERVER, 8883);
+  mqttClient.setCallback(subscribeReceive);
   //pinMode(ESP_BUILTIN_LED, OUTPUT);
 
   // Fetch last known pulse count value from gw
@@ -232,6 +234,23 @@ void setup() {
   lastSend = millis();
 
 
+}
+
+void subscribeReceive(char* topic, byte* payload, unsigned int length)
+{
+  // Print the topic
+  Serial.print("Topic: ");
+  Serial.println(topic);
+ 
+  // Print the message
+  Serial.print("Message: ");
+  for(int i = 0; i < length; i ++)
+  {
+    Serial.print(char(payload[i]));
+  }
+ 
+  // Print a newline
+  Serial.println("");
 }
 
 void loop() {
@@ -251,7 +270,7 @@ void loop() {
   {
     // New watt value has been calculated
     //if (!SLEEP_MODE && watt != oldWatt)
-    if (!SLEEP_MODE && sendTime && watt != oldWatt)
+    if (!SLEEP_MODE && watt != oldWatt)
     {
       // Check that we don't get unreasonable large watt value, which
       // could happen when long wraps or false interrupt triggered
