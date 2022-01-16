@@ -6,7 +6,6 @@
 #include <ArduinoOTA.h>
 #include "enums.h"
 #include "config.h"
-#include "config_sen.h"
 
 extern void goToDeepSleep();
 

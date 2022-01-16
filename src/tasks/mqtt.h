@@ -2,7 +2,6 @@
 #define TASK_MQTT_AWS
 
 #include "config.h"
-#include "config_sen.h" 
 
 #include <Arduino.h>
 #include <WiFiClientSecure.h>
