@@ -3,7 +3,6 @@
 
 // Configurations
 #include "config.h"
-#include "config_sen.h"
 #include "enums.h"
 
 #include "tasks/wifi-connection.h"
