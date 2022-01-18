@@ -28,8 +28,9 @@
  * WiFi credentials
  */
 
-#define WIFI_PASSWORD ""
-#define WIFI_NETWORK ""
+#define STAPSK 
+#define STASSID 
+
 
 /**
  * Timeout for the WiFi connection. When this is reached,
@@ -68,9 +69,9 @@
  */
 #define MQTT_ENABLED true
 
-#define MQTT_SERVER ""
-#define MQTT_USER ""
-#define MQTT_PASSWORD ""
+#define MQTT_SERVER 
+#define MQTT_USER 
+#define MQTT_PASSWORD 
 #define MQTT_CONNECT_DELAY 200
 #define MQTT_CONNECT_TIMEOUT 20000 // 20 seconds
 #define MQTT_TOPIC_STATE "home/energymeter/status"

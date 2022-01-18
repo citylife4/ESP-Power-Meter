@@ -14,16 +14,16 @@ extern unsigned char measureIndex;
 
 void measureElectricity()
 {
-    serial_println("[ENERGY] Measuring...");
+    //serial_println("[ENERGY] Measuring...");
     //long start = millis();
 
     double amps = emon1.calcIrms(1480);
     double watts = amps * HOME_VOLTAGE;
 
-    serial_print("[ENERGY] Amps= ");
+    //serial_print("[ENERGY] Amps= ");
     serial_println(amps);
-    serial_print("[ENERGY] Watts=");
-    serial_println(watts);
+    //serial_print("[ENERGY] Watts=");
+    //serial_println(watts);
 
     measurements[measureIndex] = watts;
     measureIndex++;

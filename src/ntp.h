@@ -1,7 +1,6 @@
 #ifndef TASK_FETCH_TIME_NTP
 #define TASK_FETCH_TIME_NTP
 
-#include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 #include <NTPClient.h>
 #include "enums.h"
