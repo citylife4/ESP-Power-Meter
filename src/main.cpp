@@ -68,7 +68,7 @@ void reconnectToMQTT(MilliSec currentMilliSec)
 
   DEBUG_LOG("Attempting MQTT connection...");
   // Attempt to connect
-  if (pubsubClient.connect(ID))
+  if (pubsubClient.connect(ID, MQTT_USER, MQTT_PASSWORD))
   {
     DEBUG_LOGLN("connected");
 
